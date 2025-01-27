@@ -1,32 +1,41 @@
-import { Link } from 'react-router-dom';
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import { Link } from "react-router-dom";
 
-function Navbar() {
+const Navbar = () => {
   return (
-    <nav style={styles.navbar}>
-      <ul style={styles.navList}>
-        <li><Link to="/" style={styles.navLink}>Home</Link></li>
-        <li><Link to="/add" style={styles.navLink}>Add Post</Link></li>
-      </ul>
-    </nav>
+    <div>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" color="secondary">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              BlogApp
+            </Typography>
+            <Button>
+              <Link style={{ textDecoration: "none", color: "white" }} to={"/"}>
+                Home
+              </Link>
+            </Button>
+            <Button>
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to={"/add"}
+              >
+                Add
+              </Link>
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </div>
   );
-}
-
-const styles = {
-  navbar: {
-    backgroundColor: '#333',
-    padding: '1rem',
-  },
-  navList: {
-    listStyle: 'none',
-    padding: 0,
-    display: 'flex',
-    justifyContent: 'space-around',
-  },
-  navLink: {
-    color: '#fff',
-    textDecoration: 'none',
-    fontSize: '18px',
-  },
 };
 
 export default Navbar;

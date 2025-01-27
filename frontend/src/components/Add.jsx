@@ -1,73 +1,91 @@
-import { useState } from 'react';
+import { Box, Button, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function Add() {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+const Add = () => {
+  const navigate = useNavigate();
+  const [inputs, setInputs] = useState({
+    title: "",
+    content: "",
+    img_url: "",
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Send the post data to the backend here
-    console.log({ title, body });
+  const inputHandler = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
+
+  const addData = () => {
+    axios
+      .post("http://localhost:3001/add", inputs)
+      .then((res) => {
+        alert(res.data.message);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <div style={styles.container}>
-      <h1>Add a New Post</h1>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <label style={styles.label}>Title</label>
-        <input 
-          type="text" 
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)} 
-          style={styles.input}
-        />
-        
-        <label style={styles.label}>Body</label>
-        <textarea 
-          value={body} 
-          onChange={(e) => setBody(e.target.value)} 
-          style={styles.textarea}
-        />
+    <div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",  // Set full height
+          backgroundColor: "#ffffff", // Set background color to white
+        }}
+      >
+        <Box
+          component="form"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            width: "600px",
+            padding: "20px",
+            borderRadius: "8px",  // Optional: add rounded corners
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Optional: add shadow
+            backgroundColor: "#fff",  // Set background color to white for form box
+          }}
+        >
+          <TextField
+            variant="outlined"
+            placeholder="Title"
+            onChange={inputHandler}
+            name="title"
+            value={inputs.title}
+            fullWidth
+          />
+          <TextField
+            variant="outlined"
+            placeholder="Content"
+            onChange={inputHandler}
+            name="content"
+            value={inputs.content}
+            multiline
+            rows={4}  // Added rows to make the text area larger
+            fullWidth
+          />
+          <TextField
+            variant="outlined"
+            placeholder="Image URL"
+            onChange={inputHandler}
+            name="img_url"
+            value={inputs.img_url}
+            fullWidth
+          />
 
-        <button type="submit" style={styles.button}>Submit</button>
-      </form>
+          <Button variant="contained" color="secondary" onClick={addData}>
+            Submit
+          </Button>
+        </Box>
+      </Box>
     </div>
   );
-}
-
-const styles = {
-  container: {
-    padding: '20px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-  },
-  label: {
-    fontSize: '18px',
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '8px',
-    border: '1px solid #ddd',
-  },
-  textarea: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '8px',
-    border: '1px solid #ddd',
-    height: '150px',
-  },
-  button: {
-    backgroundColor: '#0073e6',
-    color: 'white',
-    padding: '10px',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-  },
 };
 
 export default Add;
